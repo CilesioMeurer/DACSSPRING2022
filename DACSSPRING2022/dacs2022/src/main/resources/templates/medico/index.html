@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      
+    <head th:include="layout :: htmlhead"></head>
+
+    <body>
+        <nav th:replace="layout :: menu">(menu)</nav>
+
+        <div class="container">
+            <h1 class="text-center">Medicos</h1>
+
+            <div class="botao-direita">
+            <a th:href="@{/}" class="btn btn-primary">Voltar</a> 
+            <a th:href="@{/medico/novo}" class="btn btn-primary">Novo</a>
+            </div>
+            <table class="table" id="medico">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NOME</th>
+                        <th>CRM</th>
+                        <th>PROCEDIMENTOS</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="medico : ${listaMedicos}">
+                        <td th:text="${medico.id}"></td>
+                        <td th:text="${medico.nome}"></td>
+                        <td th:text="${medico.CRM}"></td>
+                        <td th:text="${medico.listaProcedimentos}"></td>
+                        <td>
+                            <a th:href="@{'/medico/alterar/'+${medico.id}}"
+                            class="btn btn-primary">Alterar</a>
+
+                            <button class="btn btn-danger js-delete" 
+                                    th:data-id="${medico.id}" >Excluir</button>
+
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+        
+        <div th:include="layout :: footer">(footer)</div>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#medico").on('click','.js-delete', function(){
+                    let button = $(this);
+                    bootbox.confirm("confirma a exclusão do registro?",function(result){
+                        if(result){
+                            $.ajax({
+                                url: '/medico/delete/' + button.attr('data-id'),
+                                method: 'GET',
+                                sucess: function(){
+                                    window.location.href = '/medico/';
+                                }
+                            });
+                        }
+                    });
+                });   
+            });
+
+
+        </script>
+    </body>
+</html>
