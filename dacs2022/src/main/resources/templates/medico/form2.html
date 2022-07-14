@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      
+    <head th:include="layout :: htmlhead"></head>
+
+    <body>
+        <nav th:replace="layout :: menu">(menu)</nav>
+
+        <div class="container">
+            <h1>Medico2</h1>
+            <form th:action="@{/medico/}"
+                  th:object="${medico}" method="POST">
+
+                
+                <input type="hidden" th:field="*{id}">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="txtnome">Nome:</label>
+                            <input class="form-control" placeholder="Ex: Gustavo"
+                                th:field="*{nome}"
+                                type="text" id="txtnome">
+                                <p th:if="${#fields.hasErrors('nome')}"
+                                th:errors="*{nome}"
+                                class="alert alert-danger"/></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="txtCRM">CRM:</label>
+                            <input class="form-control" placeholder="Ex: 1000054"
+                                th:field="*{CRM}"
+                                type="text" id="txtCRM">
+                                <p th:if="${#fields.hasErrors('CRM')}"
+                                th:errors="*{CRM}"
+                                class="alert alert-danger"/></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Procedimento:</label>
+                        <select th:field="*{procedimentoId}"
+                            class="form-select">
+                            <option
+                                th:each="umProcedimento : ${listaProcedimentos}"
+                                th:value="${umProcedimento.id}"
+                                th:text="${umProcedimento.descricao}"></option>
+
+                        </select>
+                        <button type="submit" name="incProcedimento" class="btn btn-primary">Incluir Procedimento</button>
+                    </div>
+                    <div class="form-group">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="umProcedimento, stat : *{listaProcedimentos}">
+                                    <td th:text="${umProcedimento.descricao}"></td>
+                                    <input type="hidden" th:field="*{listaProcedimentos[__${stat.index}__].id}"/>
+                                    <input type="hidden" th:field="*{listaProcedimentos[__${stat.index}__].descricao}"/>
+                                    <td>
+                                        <button type="submit" name="removeitem" th:value="__${stat.index}__" class="btn btn-primary">Remover</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <button type="submit" name="save" class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
+        
+        <div th:include="layout :: footer">(footer)</div>
+    </body>
+</html>
