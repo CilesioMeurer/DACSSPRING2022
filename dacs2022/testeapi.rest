@@ -1,0 +1,234 @@
+#token
+# @name loginAPI
+POST http://localhost:8081/api/v1/auth/signin
+content-type:application/json
+
+{
+    "usuario": "admin", "senha": "admin"
+}
+
+###
+@token = {{loginAPI.response.body.*}}
+
+###
+
+POST http://localhost:8081/api/v1/pacientes 
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"nome": "Mariazinha", 
+"sexo": "Feminino", 
+"dataNascimento": "2022-01-17T00:00:00"
+}
+
+{
+"nome": "Mariazinha", 
+"sexo": "Feminino", 
+"dataNascimento": "2022-01-17T00:00:00",
+"cidade": "Joinville",
+"listaPlanos": [
+                        {"id":1,"nome":"SUS"}, 
+                        {"id":2,"nome":"Privado"}
+                      ]
+}
+
+###
+
+GET http://localhost:8081/api/v1/pacientes
+Authorization: Bearer {{token}}
+
+###
+
+PUT http://localhost:8081/api/v1/pacientes/1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"nome": "Mariazao", 
+"sexo": "Masculino", 
+"dataNascimento": "2022-08-17T00:00:00"
+}
+
+###
+
+DELETE http://localhost:8081/api/v1/pacientes/1
+Authorization: Bearer {{token}}
+
+#########
+
+POST http://localhost:8081/api/v1/procedimento 
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"descricao": "teste2"
+}
+
+###
+
+GET http://localhost:8081/api/v1/procedimento
+Authorization: Bearer {{token}}
+
+###
+
+PUT http://localhost:8081/api/v1/procedimento/1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"descricao": "teste3"
+}
+
+###
+
+DELETE http://localhost:8081/api/v1/procedimento/1
+Authorization: Bearer {{token}}
+
+#########
+
+POST http://localhost:8081/api/v1/medico 
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"nome": "testador Junior Filho", 
+"listaProcedimentos": [
+                        {"id":1,"descricao":"teste2"}
+                      ],
+"crm": "5000000454"
+}
+
+###
+
+GET http://localhost:8081/api/v1/medico
+Authorization: Bearer {{token}}
+
+###
+
+PUT http://localhost:8081/api/v1/medico/1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"nome": "testador Junior Filho Neto Silveira Ferreira Silva", 
+"listaProcedimentos": [
+                        {"id":1,"descricao":"teste2"}
+                      ],
+"crm": "5000000454"
+}
+
+###
+
+DELETE http://localhost:8081/api/v1/medico/1
+Authorization: Bearer {{token}}
+
+#########
+
+POST http://localhost:8081/api/v1/planodesaude
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"nome": "sus"
+}
+
+###
+
+GET http://localhost:8081/api/v1/planodesaude
+Authorization: Bearer {{token}}
+
+###
+PUT http://localhost:8081/api/v1/planodesaude/1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"nome": "sus"
+}
+
+###
+
+DELETE http://localhost:8081/api/v1/planodesaude/1
+Authorization: Bearer {{token}}
+
+#########
+
+POST http://localhost:8081/api/v1/cidade
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"nome": "Curitiba"
+}
+
+###
+
+GET http://localhost:8081/api/v1/cidade
+Authorization: Bearer {{token}}
+
+###
+PUT http://localhost:8081/api/v1/cidade/1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"nome": "Joinville"
+}
+
+###
+
+DELETE http://localhost:8081/api/v1/cidade/1
+Authorization: Bearer {{token}}
+
+######### ---------------
+
+
+POST http://localhost:8081/api/v1/consulta
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"data": "2022-08-17T00:00:00",
+"status": "andamento",
+    "paciente": {
+      "id": 1,
+      "nome": "Mariazinha",
+      "Sexo": "Feminino",
+      "dataNascimento": "2022-01-17T00:00:00",
+      "cidade": {"id":1,
+                 "nome": "Curitiba"
+      }
+    },
+    "listaProcedimentos": [null],
+    "medicoResponsavel":{"id":1,
+                        "nome":"mario",
+                        "listaProcedimentos": [
+                        {"id":1,"descricao":"Cirurgia Plastica facial"}
+                      ],
+                        "crm":"5000043"
+    }
+                      
+
+
+}
+
+###
+
+GET http://localhost:8081/api/v1/consulta
+Authorization: Bearer {{token}}
+
+###
+PUT http://localhost:8081/api/v1/consulta/1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+"status": "Encerrada"
+}
+
+###
+
+DELETE http://localhost:8081/api/v1/consulta/1
+Authorization: Bearer {{token}}
+
